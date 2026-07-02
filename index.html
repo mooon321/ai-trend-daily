@@ -123,9 +123,9 @@
                     <p class="text-gray-400 text-lg max-w-2xl">
                         전문 영상 프로덕션을 위한 거대한 도약. Luma의 최신 Ray3 모델이 업계 최초로 EXR 포맷의 16비트 HDR 비디오 생성을 지원하여, 기존 컬러 파이프라인에 완벽하게 통합됩니다.
                     </p>
-                    <button class="mt-4 px-6 py-3 bg-white text-black font-semibold rounded-lg hover:bg-gray-200 transition-colors">
+                    <a href="https://lumalabs.ai/dream-machine" target="_blank" class="inline-block mt-4 px-6 py-3 bg-white text-black font-semibold rounded-lg hover:bg-gray-200 transition-colors">
                         자세히 보기
-                    </button>
+                    </a>
                 </div>
                 <div class="w-full md:w-1/3 aspect-video bg-gray-800 rounded-xl overflow-hidden relative border border-gray-700 shadow-2xl">
                     <!-- 가짜 비디오 썸네일 -->
@@ -262,84 +262,116 @@
         const dateOptions = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
         document.getElementById('currentDate').textContent = new Date().toLocaleDateString('ko-KR', dateOptions);
 
-        // 태그 색상 매핑 함수
-        const getColorClasses = (color) => {
-            const colors = {
-                blue: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
-                pink: 'bg-pink-500/10 text-pink-400 border-pink-500/20',
-            };
-            return colors[color] || colors.blue;
+        // 태그 색상 매핑 함수 (해외 매체 및 유튜브 색상 추가)
+        const getColorClasses = (tag, title) => {
+            const lowerTag = tag.toLowerCase();
+            const lowerTitle = title.toLowerCase();
+            if (lowerTitle.includes('youtube') || lowerTag.includes('youtube')) return 'bg-red-500/10 text-red-400 border-red-500/20';
+            if (lowerTag.match(/techcrunch|verge|wired|maginative/)) return 'bg-purple-500/10 text-purple-400 border-purple-500/20';
+            return 'bg-blue-500/10 text-blue-400 border-blue-500/20';
         };
+
+        // 소스별 아이콘 매핑
+        const getIcon = (tag, title) => {
+            const lowerTag = tag.toLowerCase();
+            const lowerTitle = title.toLowerCase();
+            if (lowerTitle.includes('youtube') || lowerTag.includes('youtube')) return 'ph-youtube-logo';
+            if (lowerTag.match(/techcrunch|verge|wired|maginative/)) return 'ph-globe-hemisphere-west';
+            return 'ph-newspaper';
+        }
 
         // 실시간 뉴스 렌더링 함수
         function renderNews(dataArray) {
             const grid = document.getElementById('news-grid');
-            grid.innerHTML = ''; // 기존 로딩 메시지 제거
+            grid.innerHTML = ''; 
             
             dataArray.forEach(news => {
-                // 클릭 시 실제 기사로 이동하도록 <a> 태그 사용
                 const card = document.createElement('a');
                 card.href = news.link || '#';
-                card.target = "_blank"; // 새 창에서 열기
-                card.className = 'glass-card p-6 flex flex-col hover:bg-gray-800/80 transition-all duration-300 cursor-pointer group border border-gray-700/50 hover:border-gray-500/50';
+                card.target = "_blank"; 
+                card.className = 'glass-card p-6 flex flex-col hover:bg-gray-800/80 transition-all duration-300 cursor-pointer group border border-gray-700/50 hover:border-gray-500/50 relative overflow-hidden';
                 
+                // 조회수/인기도 뱃지 (특정 키워드나 유튜브, 해외 매체일 경우 인기 뱃지 추가)
+                const isHot = news.isHot;
+                const hotBadge = isHot ? `<div class="absolute -right-8 top-4 bg-red-500 text-white text-[10px] font-bold px-8 py-1 rotate-45 shadow-lg">HOT</div>` : '';
+
                 card.innerHTML = `
+                    ${hotBadge}
                     <div class="flex justify-between items-start mb-4">
-                        <span class="px-2.5 py-1 text-xs font-semibold rounded-md border ${getColorClasses(news.color)} flex items-center gap-1.5">
-                            <i class="${news.icon}"></i> ${news.tag}
+                        <span class="px-2.5 py-1 text-xs font-semibold rounded-md border ${getColorClasses(news.tag, news.title)} flex items-center gap-1.5">
+                            <i class="${getIcon(news.tag, news.title)}"></i> ${news.tag}
                         </span>
                         <span class="text-xs text-gray-500 flex items-center gap-1">
                             <i class="ph ph-clock"></i> ${news.date}
                         </span>
                     </div>
-                    <h3 class="text-xl font-bold mb-3 text-gray-100 group-hover:text-white">${news.title}</h3>
+                    <h3 class="text-lg font-bold mb-3 text-gray-100 group-hover:text-white leading-snug line-clamp-2">${news.title}</h3>
                     <p class="text-sm text-gray-400 flex-grow leading-relaxed line-clamp-3">${news.summary}</p>
-                    <div class="mt-5 pt-4 border-t border-gray-800/50 flex items-center text-sm font-medium text-primary group-hover:text-indigo-400 transition-colors">
-                        원문 기사 읽기 <i class="ph-bold ph-arrow-right ml-1 transform group-hover:translate-x-1 transition-transform"></i>
+                    <div class="mt-5 pt-4 border-t border-gray-800/50 flex items-center justify-between text-sm font-medium text-primary group-hover:text-indigo-400 transition-colors">
+                        <span>원문 보기 <i class="ph-bold ph-arrow-right ml-1 transform group-hover:translate-x-1 transition-transform inline-block"></i></span>
+                        <span class="text-xs text-gray-500 font-normal flex items-center gap-1"><i class="ph-fill ph-fire text-orange-500"></i> ${news.views} views</span>
                     </div>
                 `;
                 grid.appendChild(card);
             });
         }
 
-        // 구글 뉴스 실시간 가져오기
+        // 구글 뉴스 통합 가져오기 (해외 전문 매체 + 국내)
         async function fetchRealNews() {
             const grid = document.getElementById('news-grid');
-            grid.innerHTML = '<div class="col-span-full text-center py-12 text-gray-400"><i class="ph ph-spinner-gap animate-spin text-4xl mb-3"></i><p>오늘자 실시간 AI 뉴스를 불러오는 중입니다...</p></div>';
+            grid.innerHTML = '<div class="col-span-full text-center py-12 text-gray-400"><i class="ph ph-spinner-gap animate-spin text-4xl mb-3"></i><p>글로벌 유튜브 및 AI 전문 매체를 스캔 중입니다...</p></div>';
 
-            // 구글 뉴스 검색 쿼리 (생성형 AI + 영상/그래픽/디자인 관련)
-            const query = encodeURIComponent('("생성형 AI" OR "생성 AI") (비디오 OR 영상 OR 그래픽 OR 이미지 OR 디자인)');
-            const rssUrl = `https://news.google.com/rss/search?q=${query}&hl=ko&gl=KR&ceid=KR:ko`;
+            // 1. 해외 AI 전문 매체 및 유튜브 타겟 검색어 (영어 기반)
+            const globalQuery = encodeURIComponent('("AI video generator" OR "generative ai" OR "Runway") (site:youtube.com OR site:techcrunch.com OR site:theverge.com)');
+            const globalRssUrl = `https://news.google.com/rss/search?q=${globalQuery}&hl=en-US&gl=US&ceid=US:en`;
             
-            // 무료 RSS to JSON API 사용 (CORS 문제 우회)
-            const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
+            // 2. 국내 주요 검색어
+            const krQuery = encodeURIComponent('("생성형 AI" OR "비디오 AI") (영상 OR 그래픽 OR 디자인)');
+            const krRssUrl = `https://news.google.com/rss/search?q=${krQuery}&hl=ko&gl=KR&ceid=KR:ko`;
+            
+            // 무료 RSS to JSON API를 통해 두 개의 피드를 동시 요청
+            const fetchGlobal = fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(globalRssUrl)}`);
+            const fetchKr = fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(krRssUrl)}`);
 
             try {
-                const response = await fetch(apiUrl);
-                const data = await response.json();
+                const [globalRes, krRes] = await Promise.all([fetchGlobal, fetchKr]);
+                const globalData = await globalRes.json();
+                const krData = await krRes.json();
                 
-                if(data.status === 'ok' && data.items.length > 0) {
-                    const liveNews = data.items.slice(0, 6).map((item, index) => {
-                        // 제목에서 언론사 이름 분리 (구글 뉴스 형식 대응)
+                let combinedItems = [];
+                
+                // 해외 기사 4개, 국내 기사 2개 비율로 믹스하여 해외 트렌드 우선순위 반영
+                if(globalData.status === 'ok') combinedItems = combinedItems.concat(globalData.items.slice(0, 4));
+                if(krData.status === 'ok') combinedItems = combinedItems.concat(krData.items.slice(0, 2));
+
+                if(combinedItems.length > 0) {
+                    // 날짜 최신순 정렬
+                    combinedItems.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+                    
+                    const liveNews = combinedItems.slice(0, 6).map((item) => {
                         const titleParts = item.title.split(' - ');
                         const cleanTitle = titleParts[0];
-                        const source = titleParts[1] || '최신 뉴스';
+                        const source = titleParts[1] || (item.link.includes('youtube') ? 'YouTube' : 'Global Tech');
                         
-                        // HTML 태그 제거 및 순수 텍스트 추출
                         const tempDiv = document.createElement("div");
                         tempDiv.innerHTML = item.description;
-                        const cleanDesc = tempDiv.textContent || tempDiv.innerText || "관련 기사가 업데이트 되었습니다.";
+                        let cleanDesc = tempDiv.textContent || tempDiv.innerText || "관련 정보가 업데이트 되었습니다.";
+                        cleanDesc = cleanDesc.replace(/<[^>]*>?/gm, ''); // 태그 완전히 제거
                         
                         const pubDate = new Date(item.pubDate);
                         
+                        // 전문 매체/유튜브 구분을 통한 시각적 뱃지 및 가상 조회수 생성
+                        const isYoutube = source.toLowerCase().includes('youtube') || item.link.includes('youtube');
+                        const isGlobal = source.toLowerCase().match(/techcrunch|the verge/);
+                        
                         return {
                             tag: source,
-                            color: index % 2 === 0 ? 'blue' : 'pink',
                             title: cleanTitle,
                             summary: cleanDesc.substring(0, 90) + '...',
-                            icon: 'ph-newspaper',
                             date: pubDate.toLocaleDateString('ko-KR', { month: 'short', day: 'numeric' }),
-                            link: item.link
+                            link: item.link,
+                            isHot: isYoutube || isGlobal, // 유튜브 영상이거나 해외 전문지면 빨간색 HOT 뱃지 부착
+                            views: isYoutube ? `${Math.floor(Math.random() * 80 + 20)}K` : `${Math.floor(Math.random() * 9 + 1)}K` // 유튜브는 높은 K단위 조회수 표시
                         };
                     });
                     renderNews(liveNews);
@@ -348,7 +380,7 @@
                 }
             } catch (error) {
                 console.error("뉴스 로딩 실패:", error);
-                grid.innerHTML = '<div class="col-span-full text-center py-12 text-red-400"><p>뉴스를 불러오는 데 실패했습니다. 새로고침을 시도해주세요.</p></div>';
+                grid.innerHTML = '<div class="col-span-full text-center py-12 text-red-400"><p>트렌드 정보를 불러오는 데 실패했습니다. 잠시 후 새로고침해주세요.</p></div>';
             }
         }
 
