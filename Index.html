@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ko" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Creator Daily - 영상/디자인 AI 트렌드</title>
+    
+    <!-- 웹폰트: Pretendard -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Phosphor Icons (디자인 친화적인 아이콘 팩) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Tailwind 커스텀 설정 -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Pretendard', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#6366f1', // Indigo
+                        secondary: '#ec4899', // Pink
+                        darker: '#0f111a',
+                        card: '#1e212b',
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                        'hero-glow': 'conic-gradient(from 180deg at 50% 50%, #2a8af6 0deg, #a853ba 180deg, #e92a67 360deg)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: theme('colors.darker');
+            color: #f3f4f6;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .glass-card {
+            background: rgba(30, 33, 43, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1rem;
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #818cf8, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* 탭 전환 애니메이션 */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 스크롤바 꾸미기 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f111a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #374151;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4b5563;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col relative overflow-x-hidden">
+
+    <!-- 배경 장식 (블러 효과) -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-hero-glow opacity-20 blur-[100px] pointer-events-none rounded-full"></div>
+
+    <nav class="sticky top-0 z-50 glass-card border-b-0 rounded-none border-x-0 border-t-0 px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-2">
+            <i class="ph-fill ph-aperture text-3xl text-primary"></i>
+            <h1 class="text-xl font-bold tracking-tight">AI Creator <span class="gradient-text">Daily</span></h1>
+        </div>
+        <div class="flex items-center gap-4 text-sm text-gray-400">
+            <span id="currentDate" class="hidden md:block font-medium"></span>
+            <button class="bg-primary/10 hover:bg-primary/20 text-indigo-400 px-4 py-2 rounded-full font-medium transition-colors flex items-center gap-2">
+                <i class="ph ph-envelope-simple"></i> 뉴스레터 구독
+            </button>
+        </div>
+    </nav>
+
+    <main class="flex-grow container mx-auto px-4 md:px-6 py-8 relative z-10">
+        
+        <!-- 히어로 배너 -->
+        <section class="glass-card p-6 md:p-10 mb-10 relative overflow-hidden group">
+            <div class="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div class="relative z-10 flex flex-col md:flex-row gap-8 items-center">
+                <div class="flex-1 space-y-4">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/20 text-pink-400 text-xs font-bold uppercase tracking-wider border border-pink-500/30">
+                        <span class="w-2 h-2 rounded-full bg-pink-500 animate-pulse"></span>
+                        Today's Highlight
+                    </div>
+                    <h2 class="text-3xl md:text-5xl font-bold leading-tight">
+                        Luma Ray3,<br>네이티브 <span class="gradient-text">16비트 HDR</span> 지원 시작
+                    </h2>
+                    <p class="text-gray-400 text-lg max-w-2xl">
+                        전문 영상 프로덕션을 위한 거대한 도약. Luma의 최신 Ray3 모델이 업계 최초로 EXR 포맷의 16비트 HDR 비디오 생성을 지원하여, 기존 컬러 파이프라인에 완벽하게 통합됩니다.
+                    </p>
+                    <button class="mt-4 px-6 py-3 bg-white text-black font-semibold rounded-lg hover:bg-gray-200 transition-colors">
+                        자세히 보기
+                    </button>
+                </div>
+                <div class="w-full md:w-1/3 aspect-video bg-gray-800 rounded-xl overflow-hidden relative border border-gray-700 shadow-2xl">
+                    <!-- 가짜 비디오 썸네일 -->
+                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop" alt="Abstract 3D Render" class="w-full h-full object-cover opacity-70">
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center cursor-pointer hover:bg-white/30 transition">
+                            <i class="ph-fill ph-play text-white text-2xl ml-1"></i>
+                        </div>
+                    </div>
+                    <div class="absolute bottom-3 right-3 bg-black/60 px-2 py-1 rounded text-xs font-mono">4K 60FPS</div>
+                </div>
+            </div>
+        </section>
+
+        <div class="flex space-x-1 border-b border-gray-800 mb-8 overflow-x-auto no-scrollbar">
+            <button onclick="switchTab('news')" class="tab-btn active px-6 py-3 text-sm font-medium border-b-2 border-primary text-primary transition-colors whitespace-nowrap">
+                <i class="ph ph-newspaper mr-1"></i> 데일리 브리핑
+            </button>
+            <button onclick="switchTab('models')" class="tab-btn px-6 py-3 text-sm font-medium border-b-2 border-transparent text-gray-400 hover:text-gray-200 transition-colors whitespace-nowrap">
+                <i class="ph ph-chart-line-up mr-1"></i> 모델 현황 & 랭킹
+            </button>
+            <button onclick="switchTab('tutorials')" class="tab-btn px-6 py-3 text-sm font-medium border-b-2 border-transparent text-gray-400 hover:text-gray-200 transition-colors whitespace-nowrap">
+                <i class="ph ph-magic-wand mr-1"></i> 프롬프트 & 튜토리얼
+            </button>
+        </div>
+
+        <section id="news" class="tab-content active">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="news-grid">
+                <!-- 뉴스 카드가 자바스크립트를 통해 동적으로 렌더링됩니다. -->
+            </div>
+        </section>
+
+        <section id="models" class="tab-content">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- 비디오 모델 -->
+                <div class="glass-card p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-bold flex items-center gap-2"><i class="ph-fill ph-video-camera text-primary"></i> 비디오 생성 AI (26년 7월)</h3>
+                        <span class="text-xs text-gray-400 bg-gray-800 px-2 py-1 rounded">단일 프롬프트 기준</span>
+                    </div>
+                    <div class="space-y-4">
+                        <!-- 랭킹 아이템 -->
+                        <div class="bg-gray-800/50 p-4 rounded-lg flex items-center gap-4 border border-gray-700/50">
+                            <div class="text-2xl font-bold text-gray-500 w-6 text-center">1</div>
+                            <div class="flex-grow">
+                                <h4 class="font-bold text-white flex items-center gap-2">Seedance 2.0 <span class="text-[10px] bg-green-500/20 text-green-400 px-1.5 py-0.5 rounded uppercase">Top</span></h4>
+                                <p class="text-sm text-gray-400">ByteDance | 다중 레퍼런스 및 물리법칙 묘사 최우수</p>
+                            </div>
+                        </div>
+                        <div class="bg-gray-800/50 p-4 rounded-lg flex items-center gap-4 border border-gray-700/50">
+                            <div class="text-2xl font-bold text-gray-500 w-6 text-center">2</div>
+                            <div class="flex-grow">
+                                <h4 class="font-bold text-white">HappyHorse 1.0</h4>
+                                <p class="text-sm text-gray-400">Alibaba | 7개 국어 완벽 립싱크 및 비주얼 퀄리티</p>
+                            </div>
+                        </div>
+                        <div class="bg-gray-800/50 p-4 rounded-lg flex items-center gap-4 border border-gray-700/50">
+                            <div class="text-2xl font-bold text-gray-500 w-6 text-center">3</div>
+                            <div class="flex-grow">
+                                <h4 class="font-bold text-white">Veo 3.1</h4>
+                                <p class="text-sm text-gray-400">Google | 48kHz 고음질 오디오 및 캐릭터 일관성</p>
+                            </div>
+                        </div>
+                        <div class="bg-gray-800/50 p-4 rounded-lg flex items-center gap-4 border border-gray-700/50 opacity-60">
+                            <div class="text-2xl font-bold text-gray-500 w-6 text-center">-</div>
+                            <div class="flex-grow">
+                                <h4 class="font-bold text-white line-through">Sora 2</h4>
+                                <p class="text-xs text-red-400">OpenAI | 소비자 API 서비스 종료 예정 (9월)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 그래픽 모델 -->
+                <div class="glass-card p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-bold flex items-center gap-2"><i class="ph-fill ph-image text-pink-500"></i> 그래픽/이미지 AI</h3>
+                        <span class="text-xs text-gray-400 bg-gray-800 px-2 py-1 rounded">상업용 기준</span>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="bg-gray-800/50 p-4 rounded-lg flex items-center gap-4 border border-gray-700/50">
+                            <div class="text-2xl font-bold text-gray-500 w-6 text-center">1</div>
+                            <div class="flex-grow">
+                                <h4 class="font-bold text-white">Midjourney v7.2</h4>
+                                <p class="text-sm text-gray-400">타이포그래피 렌더링 완벽 지원 및 3D 메시 추출</p>
+                            </div>
+                        </div>
+                        <div class="bg-gray-800/50 p-4 rounded-lg flex items-center gap-4 border border-gray-700/50">
+                            <div class="text-2xl font-bold text-gray-500 w-6 text-center">2</div>
+                            <div class="flex-grow">
+                                <h4 class="font-bold text-white">Adobe Firefly Pro</h4>
+                                <p class="text-sm text-gray-400">벡터 실시간 변환 및 브랜드 에셋 학습 특화</p>
+                            </div>
+                        </div>
+                        <div class="bg-gray-800/50 p-4 rounded-lg flex items-center gap-4 border border-gray-700/50">
+                            <div class="text-2xl font-bold text-gray-500 w-6 text-center">3</div>
+                            <div class="flex-grow">
+                                <h4 class="font-bold text-white">Stable Artisan (SD3.5)</h4>
+                                <p class="text-sm text-gray-400">오픈소스 | 로컬 구동 최적화 및 컨트롤넷 통합</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tutorials" class="tab-content">
+            <div class="glass-card p-8 text-center max-w-3xl mx-auto border-t-4 border-t-secondary">
+                <i class="ph-duotone ph-lightbulb text-6xl text-secondary mb-4"></i>
+                <h3 class="text-2xl font-bold mb-2">오늘의 프롬프트 팁: <span class="text-white">캐릭터 일관성 유지하기</span></h3>
+                <p class="text-gray-400 mb-6 text-left leading-relaxed">
+                    최신 비디오 모델(Veo 3.1, Seedance 2.0 등)에서 동일한 인물을 여러 씬에 등장시키려면 프롬프트 묘사보다 <b>Reference Control(레퍼런스 제어)</b> 기능을 사용하는 것이 효율적입니다.
+                </p>
+                <div class="bg-gray-900 p-4 rounded-lg text-left text-sm font-mono text-gray-300 border border-gray-700 overflow-x-auto">
+                    <p class="text-pink-400"># 2026년식 모범 프롬프트 워크플로우</p>
+                    <p>1. Midjourney v7.2에서 턴어라운드 시트 생성 (정면, 측면, 후면)</p>
+                    <p>2. Video AI의 [Reference Images] 슬롯에 3장 업로드</p>
+                    <p>3. Text Prompt: <span class="text-green-400">"The character in the reference images is walking through a cyberpunk street, neon lights reflecting on their jacket. Cinematic lighting, 50mm lens."</span></p>
+                    <p>4. Motion Intensity: 0.6 (격렬한 움직임 시 얼굴 일관성이 깨지는 것을 방지)</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 푸터 -->
+    <footer class="border-t border-gray-800 bg-black/50 py-8 mt-12 text-center text-gray-500 text-sm">
+        <p>&copy; 2026 AI Creator Daily. All rights reserved.</p>
+        <p class="mt-2 text-xs">Generated for educational & informational purposes.</p>
+    </footer>
+
+    <script>
+        // 날짜 설정
+        const dateOptions = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('ko-KR', dateOptions);
+
+        // 뉴스 데이터 배열 (2026년 상황 가정)
+        const newsData = [
+            {
+                tag: '비디오 AI',
+                color: 'blue',
+                title: '오픈소스의 반격, Wan 2.7 릴리스',
+                summary: '첫 프레임과 마지막 프레임을 동시에 제어하여 컷 편집을 완벽하게 수행하는 상업용 무료 비디오 모델 Wan 2.7이 공개되었습니다.',
+                icon: 'ph-video-camera',
+                date: '1시간 전'
+            },
+            {
+                tag: '업계 동향',
+                color: 'red',
+                title: 'OpenAI Sora 2, 소비자 시장 철수 가시화',
+                summary: '오는 9월 24일부터 API 서비스가 완전히 차단됩니다. 엔터프라이즈 B2B 시장에 집중하기 위한 전략적 선택으로 분석됩니다.',
+                icon: 'ph-warning-circle',
+                date: '3시간 전'
+            },
+            {
+                tag: '오디오/음향',
+                color: 'purple',
+                title: '완벽한 립싱크 시대, Veo 3.1 업데이트',
+                summary: '단순한 효과음을 넘어 48kHz 스튜디오급 음질로 다국어 대사와 입모양을 완벽히 동기화하는 기능이 정식 추가되었습니다.',
+                icon: 'ph-waveform',
+                date: '5시간 전'
+            },
+            {
+                tag: '그래픽 디자인',
+                color: 'pink',
+                title: 'Midjourney v7.2, 타이포그래피의 완성',
+                summary: '이미지 내 텍스트 생성의 한계를 극복했습니다. 긴 문장의 한글 폰트 디자인까지 프롬프트대로 렌더링하는 데 성공했습니다.',
+                icon: 'ph-text-t',
+                date: '어제'
+            },
+            {
+                tag: '3D/애니메이션',
+                color: 'orange',
+                title: 'Adobe Firefly, 풀 3D 워크스페이스 통합',
+                summary: '생성된 2D 이미지를 즉석에서 3D 메시와 텍스처로 분리하여 After Effects로 연동하는 신기능을 선보였습니다.',
+                icon: 'ph-cube',
+                date: '어제'
+            },
+            {
+                tag: '크리에이터 툴',
+                color: 'teal',
+                title: 'Kling 3.0, 소셜 미디어 워크플로우 장악',
+                summary: '15초 단일 패스 생성과 60fps를 지원하며 숏폼 크리에이터들 사이에서 가장 많이 쓰이는 툴 1위로 선정되었습니다.',
+                icon: 'ph-tiktok-logo',
+                date: '2일 전'
+            }
+        ];
+
+        // 태그 색상 매핑 함수
+        const getColorClasses = (color) => {
+            const colors = {
+                blue: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
+                red: 'bg-red-500/10 text-red-400 border-red-500/20',
+                purple: 'bg-purple-500/10 text-purple-400 border-purple-500/20',
+                pink: 'bg-pink-500/10 text-pink-400 border-pink-500/20',
+                orange: 'bg-orange-500/10 text-orange-400 border-orange-500/20',
+                teal: 'bg-teal-500/10 text-teal-400 border-teal-500/20',
+            };
+            return colors[color] || colors.blue;
+        };
+
+        function renderNews() {
+            const grid = document.getElementById('news-grid');
+            
+            newsData.forEach(news => {
+                const card = document.createElement('div');
+                card.className = 'glass-card p-6 flex flex-col hover:bg-gray-800/80 transition-all duration-300 cursor-pointer group border border-gray-700/50 hover:border-gray-500/50';
+                
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="px-2.5 py-1 text-xs font-semibold rounded-md border ${getColorClasses(news.color)} flex items-center gap-1.5">
+                            <i class="${news.icon}"></i> ${news.tag}
+                        </span>
+                        <span class="text-xs text-gray-500 flex items-center gap-1">
+                            <i class="ph ph-clock"></i> ${news.date}
+                        </span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-gray-100 group-hover:text-white">${news.title}</h3>
+                    <p class="text-sm text-gray-400 flex-grow leading-relaxed line-clamp-3">${news.summary}</p>
+                    <div class="mt-5 pt-4 border-t border-gray-800/50 flex items-center text-sm font-medium text-primary group-hover:text-indigo-400 transition-colors">
+                        자세히 읽기 <i class="ph-bold ph-arrow-right ml-1 transform group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function switchTab(tabId) {
+            // 버튼 상태 변경
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active', 'border-primary', 'text-primary');
+                btn.classList.add('border-transparent', 'text-gray-400');
+            });
+            event.currentTarget.classList.add('active', 'border-primary', 'text-primary');
+            event.currentTarget.classList.remove('border-transparent', 'text-gray-400');
+
+            // 콘텐츠 가시성 변경
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        // 초기화
+        window.onload = () => {
+            renderNews();
+        };
+    </script>
+</body>
+</html>
