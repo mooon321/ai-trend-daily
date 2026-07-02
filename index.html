@@ -262,76 +262,25 @@
         const dateOptions = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
         document.getElementById('currentDate').textContent = new Date().toLocaleDateString('ko-KR', dateOptions);
 
-        // 뉴스 데이터 배열 (2026년 상황 가정)
-        const newsData = [
-            {
-                tag: '비디오 AI',
-                color: 'blue',
-                title: '오픈소스의 반격, Wan 2.7 릴리스',
-                summary: '첫 프레임과 마지막 프레임을 동시에 제어하여 컷 편집을 완벽하게 수행하는 상업용 무료 비디오 모델 Wan 2.7이 공개되었습니다.',
-                icon: 'ph-video-camera',
-                date: '1시간 전'
-            },
-            {
-                tag: '업계 동향',
-                color: 'red',
-                title: 'OpenAI Sora 2, 소비자 시장 철수 가시화',
-                summary: '오는 9월 24일부터 API 서비스가 완전히 차단됩니다. 엔터프라이즈 B2B 시장에 집중하기 위한 전략적 선택으로 분석됩니다.',
-                icon: 'ph-warning-circle',
-                date: '3시간 전'
-            },
-            {
-                tag: '오디오/음향',
-                color: 'purple',
-                title: '완벽한 립싱크 시대, Veo 3.1 업데이트',
-                summary: '단순한 효과음을 넘어 48kHz 스튜디오급 음질로 다국어 대사와 입모양을 완벽히 동기화하는 기능이 정식 추가되었습니다.',
-                icon: 'ph-waveform',
-                date: '5시간 전'
-            },
-            {
-                tag: '그래픽 디자인',
-                color: 'pink',
-                title: 'Midjourney v7.2, 타이포그래피의 완성',
-                summary: '이미지 내 텍스트 생성의 한계를 극복했습니다. 긴 문장의 한글 폰트 디자인까지 프롬프트대로 렌더링하는 데 성공했습니다.',
-                icon: 'ph-text-t',
-                date: '어제'
-            },
-            {
-                tag: '3D/애니메이션',
-                color: 'orange',
-                title: 'Adobe Firefly, 풀 3D 워크스페이스 통합',
-                summary: '생성된 2D 이미지를 즉석에서 3D 메시와 텍스처로 분리하여 After Effects로 연동하는 신기능을 선보였습니다.',
-                icon: 'ph-cube',
-                date: '어제'
-            },
-            {
-                tag: '크리에이터 툴',
-                color: 'teal',
-                title: 'Kling 3.0, 소셜 미디어 워크플로우 장악',
-                summary: '15초 단일 패스 생성과 60fps를 지원하며 숏폼 크리에이터들 사이에서 가장 많이 쓰이는 툴 1위로 선정되었습니다.',
-                icon: 'ph-tiktok-logo',
-                date: '2일 전'
-            }
-        ];
-
         // 태그 색상 매핑 함수
         const getColorClasses = (color) => {
             const colors = {
                 blue: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
-                red: 'bg-red-500/10 text-red-400 border-red-500/20',
-                purple: 'bg-purple-500/10 text-purple-400 border-purple-500/20',
                 pink: 'bg-pink-500/10 text-pink-400 border-pink-500/20',
-                orange: 'bg-orange-500/10 text-orange-400 border-orange-500/20',
-                teal: 'bg-teal-500/10 text-teal-400 border-teal-500/20',
             };
             return colors[color] || colors.blue;
         };
 
-        function renderNews() {
+        // 실시간 뉴스 렌더링 함수
+        function renderNews(dataArray) {
             const grid = document.getElementById('news-grid');
+            grid.innerHTML = ''; // 기존 로딩 메시지 제거
             
-            newsData.forEach(news => {
-                const card = document.createElement('div');
+            dataArray.forEach(news => {
+                // 클릭 시 실제 기사로 이동하도록 <a> 태그 사용
+                const card = document.createElement('a');
+                card.href = news.link || '#';
+                card.target = "_blank"; // 새 창에서 열기
                 card.className = 'glass-card p-6 flex flex-col hover:bg-gray-800/80 transition-all duration-300 cursor-pointer group border border-gray-700/50 hover:border-gray-500/50';
                 
                 card.innerHTML = `
@@ -346,11 +295,61 @@
                     <h3 class="text-xl font-bold mb-3 text-gray-100 group-hover:text-white">${news.title}</h3>
                     <p class="text-sm text-gray-400 flex-grow leading-relaxed line-clamp-3">${news.summary}</p>
                     <div class="mt-5 pt-4 border-t border-gray-800/50 flex items-center text-sm font-medium text-primary group-hover:text-indigo-400 transition-colors">
-                        자세히 읽기 <i class="ph-bold ph-arrow-right ml-1 transform group-hover:translate-x-1 transition-transform"></i>
+                        원문 기사 읽기 <i class="ph-bold ph-arrow-right ml-1 transform group-hover:translate-x-1 transition-transform"></i>
                     </div>
                 `;
                 grid.appendChild(card);
             });
+        }
+
+        // 구글 뉴스 실시간 가져오기
+        async function fetchRealNews() {
+            const grid = document.getElementById('news-grid');
+            grid.innerHTML = '<div class="col-span-full text-center py-12 text-gray-400"><i class="ph ph-spinner-gap animate-spin text-4xl mb-3"></i><p>오늘자 실시간 AI 뉴스를 불러오는 중입니다...</p></div>';
+
+            // 구글 뉴스 검색 쿼리 (생성형 AI + 영상/그래픽/디자인 관련)
+            const query = encodeURIComponent('("생성형 AI" OR "생성 AI") (비디오 OR 영상 OR 그래픽 OR 이미지 OR 디자인)');
+            const rssUrl = `https://news.google.com/rss/search?q=${query}&hl=ko&gl=KR&ceid=KR:ko`;
+            
+            // 무료 RSS to JSON API 사용 (CORS 문제 우회)
+            const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
+
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                
+                if(data.status === 'ok' && data.items.length > 0) {
+                    const liveNews = data.items.slice(0, 6).map((item, index) => {
+                        // 제목에서 언론사 이름 분리 (구글 뉴스 형식 대응)
+                        const titleParts = item.title.split(' - ');
+                        const cleanTitle = titleParts[0];
+                        const source = titleParts[1] || '최신 뉴스';
+                        
+                        // HTML 태그 제거 및 순수 텍스트 추출
+                        const tempDiv = document.createElement("div");
+                        tempDiv.innerHTML = item.description;
+                        const cleanDesc = tempDiv.textContent || tempDiv.innerText || "관련 기사가 업데이트 되었습니다.";
+                        
+                        const pubDate = new Date(item.pubDate);
+                        
+                        return {
+                            tag: source,
+                            color: index % 2 === 0 ? 'blue' : 'pink',
+                            title: cleanTitle,
+                            summary: cleanDesc.substring(0, 90) + '...',
+                            icon: 'ph-newspaper',
+                            date: pubDate.toLocaleDateString('ko-KR', { month: 'short', day: 'numeric' }),
+                            link: item.link
+                        };
+                    });
+                    renderNews(liveNews);
+                } else {
+                    throw new Error("뉴스 데이터 없음");
+                }
+            } catch (error) {
+                console.error("뉴스 로딩 실패:", error);
+                grid.innerHTML = '<div class="col-span-full text-center py-12 text-red-400"><p>뉴스를 불러오는 데 실패했습니다. 새로고침을 시도해주세요.</p></div>';
+            }
         }
 
         function switchTab(tabId) {
@@ -371,7 +370,7 @@
 
         // 초기화
         window.onload = () => {
-            renderNews();
+            fetchRealNews();
         };
     </script>
 </body>
