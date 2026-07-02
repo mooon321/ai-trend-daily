@@ -321,12 +321,12 @@
             const grid = document.getElementById('news-grid');
             grid.innerHTML = '<div class="col-span-full text-center py-12 text-gray-400"><i class="ph ph-spinner-gap animate-spin text-4xl mb-3"></i><p>글로벌 유튜브 및 AI 전문 매체를 스캔 중입니다...</p></div>';
 
-            // 1. 해외 AI 전문 매체 및 유튜브 타겟 검색어 (영어 기반)
-            const globalQuery = encodeURIComponent('("AI video generator" OR "generative ai" OR "Runway") (site:youtube.com OR site:techcrunch.com OR site:theverge.com)');
+            // 1. 해외 AI 전문 매체 및 유튜브 타겟 검색어 (패션쇼 기사 방지를 위해 Runway 대신 RunwayML, Runway AI 등으로 명확화)
+            const globalQuery = encodeURIComponent('("AI video generator" OR "RunwayML" OR "Runway Gen-3" OR "OpenAI Sora" OR "Luma Dream Machine" OR "Kling AI") (site:youtube.com OR site:techcrunch.com OR site:theverge.com)');
             const globalRssUrl = `https://news.google.com/rss/search?q=${globalQuery}&hl=en-US&gl=US&ceid=US:en`;
             
-            // 2. 국내 주요 검색어
-            const krQuery = encodeURIComponent('("생성형 AI" OR "비디오 AI") (영상 OR 그래픽 OR 디자인)');
+            // 2. 국내 주요 검색어 (정확도를 높이기 위해 '생성형 AI' 대신 '영상 생성 AI'로 구체화)
+            const krQuery = encodeURIComponent('("비디오 생성 AI" OR "영상 생성 AI" OR "오픈AI 소라" OR "런웨이 AI" OR "루마 AI")');
             const krRssUrl = `https://news.google.com/rss/search?q=${krQuery}&hl=ko&gl=KR&ceid=KR:ko`;
             
             // 무료 RSS to JSON API를 통해 두 개의 피드를 동시 요청
