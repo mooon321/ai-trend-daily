@@ -106,304 +106,383 @@
         </div>
     </nav>
 
-    <main class="flex-grow container mx-auto px-4 md:px-6 py-8 relative z-10">
-        
-        <!-- 히어로 배너 -->
-        <section class="glass-card p-6 md:p-10 mb-10 relative overflow-hidden group">
-            <div class="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            <div class="relative z-10 flex flex-col md:flex-row gap-8 items-center">
-                <div class="flex-1 space-y-4">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/20 text-pink-400 text-xs font-bold uppercase tracking-wider border border-pink-500/30">
-                        <span class="w-2 h-2 rounded-full bg-pink-500 animate-pulse"></span>
-                        Today's Highlight
-                    </div>
-                    <h2 class="text-3xl md:text-5xl font-bold leading-tight">
-                        Luma Ray3,<br>네이티브 <span class="gradient-text">16비트 HDR</span> 지원 시작
-                    </h2>
-                    <p class="text-gray-400 text-lg max-w-2xl">
-                        전문 영상 프로덕션을 위한 거대한 도약. Luma의 최신 Ray3 모델이 업계 최초로 EXR 포맷의 16비트 HDR 비디오 생성을 지원하여, 기존 컬러 파이프라인에 완벽하게 통합됩니다.
-                    </p>
-                    <a href="https://lumalabs.ai/dream-machine" target="_blank" class="inline-block mt-4 px-6 py-3 bg-white text-black font-semibold rounded-lg hover:bg-gray-200 transition-colors">
-                        자세히 보기
-                    </a>
-                </div>
-                <div class="w-full md:w-1/3 aspect-video bg-gray-800 rounded-xl overflow-hidden relative border border-gray-700 shadow-2xl">
-                    <!-- 가짜 비디오 썸네일 -->
-                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop" alt="Abstract 3D Render" class="w-full h-full object-cover opacity-70">
-                    <div class="absolute inset-0 flex items-center justify-center">
-                        <div class="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center cursor-pointer hover:bg-white/30 transition">
-                            <i class="ph-fill ph-play text-white text-2xl ml-1"></i>
-                        </div>
-                    </div>
-                    <div class="absolute bottom-3 right-3 bg-black/60 px-2 py-1 rounded text-xs font-mono">4K 60FPS</div>
-                </div>
-            </div>
-        </section>
+<main class="flex-grow container mx-auto px-4 md:px-6 py-8 relative z-10">
+    
+    <!-- 히어로 배너 (자바스크립트로 매일 자동 업데이트됨) -->
+    <section id="daily-highlight" class="glass-card p-6 md:p-10 mb-10 relative overflow-hidden group min-h-[300px] flex items-center">
+        <div class="w-full text-center text-gray-400"><i class="ph ph-spinner-gap animate-spin text-4xl mb-3 inline-block"></i><p>오늘의 가장 중요한 AI 뉴스를 분석 중입니다...</p></div>
+    </section>
 
-        <div class="flex space-x-1 border-b border-gray-800 mb-8 overflow-x-auto no-scrollbar">
-            <button onclick="switchTab('news')" class="tab-btn active px-6 py-3 text-sm font-medium border-b-2 border-primary text-primary transition-colors whitespace-nowrap">
-                <i class="ph ph-newspaper mr-1"></i> 데일리 브리핑
-            </button>
-            <button onclick="switchTab('models')" class="tab-btn px-6 py-3 text-sm font-medium border-b-2 border-transparent text-gray-400 hover:text-gray-200 transition-colors whitespace-nowrap">
-                <i class="ph ph-chart-line-up mr-1"></i> 모델 현황 & 랭킹
-            </button>
-            <button onclick="switchTab('tutorials')" class="tab-btn px-6 py-3 text-sm font-medium border-b-2 border-transparent text-gray-400 hover:text-gray-200 transition-colors whitespace-nowrap">
-                <i class="ph ph-magic-wand mr-1"></i> 프롬프트 & 튜토리얼
-            </button>
+    <div class="flex space-x-1 border-b border-gray-800 mb-8 overflow-x-auto no-scrollbar">
+        <button onclick="switchTab('news')" class="tab-btn active px-6 py-3 text-sm font-medium border-b-2 border-primary text-primary transition-colors whitespace-nowrap">
+            <i class="ph ph-newspaper mr-1"></i> 핫트렌드 (최근 3개월)
+        </button>
+        <button onclick="switchTab('models')" class="tab-btn px-6 py-3 text-sm font-medium border-b-2 border-transparent text-gray-400 hover:text-gray-200 transition-colors whitespace-nowrap">
+            <i class="ph ph-chart-line-up mr-1"></i> 데일리 AI 모델 랭킹
+        </button>
+        <button onclick="switchTab('tutorials')" class="tab-btn px-6 py-3 text-sm font-medium border-b-2 border-transparent text-gray-400 hover:text-gray-200 transition-colors whitespace-nowrap">
+            <i class="ph ph-magic-wand mr-1"></i> 오늘의 프롬프트 & 팁
+        </button>
+    </div>
+
+    <section id="news" class="tab-content active">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="news-grid">
+            <!-- 뉴스 카드가 자바스크립트를 통해 동적으로 렌더링됩니다. -->
         </div>
+    </section>
 
-        <section id="news" class="tab-content active">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="news-grid">
-                <!-- 뉴스 카드가 자바스크립트를 통해 동적으로 렌더링됩니다. -->
-            </div>
-        </section>
+    <section id="models" class="tab-content">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8" id="models-container">
+           <!-- 모델 랭킹이 자바스크립트를 통해 동적으로 렌더링됩니다. -->
+        </div>
+    </section>
 
-        <section id="models" class="tab-content">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- 비디오 모델 -->
-                <div class="glass-card p-6">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-xl font-bold flex items-center gap-2"><i class="ph-fill ph-video-camera text-primary"></i> 비디오 생성 AI (26년 7월)</h3>
-                        <span class="text-xs text-gray-400 bg-gray-800 px-2 py-1 rounded">단일 프롬프트 기준</span>
-                    </div>
-                    <div class="space-y-4">
-                        <!-- 랭킹 아이템 -->
-                        <div class="bg-gray-800/50 p-4 rounded-lg flex items-center gap-4 border border-gray-700/50">
-                            <div class="text-2xl font-bold text-gray-500 w-6 text-center">1</div>
-                            <div class="flex-grow">
-                                <h4 class="font-bold text-white flex items-center gap-2">Seedance 2.0 <span class="text-[10px] bg-green-500/20 text-green-400 px-1.5 py-0.5 rounded uppercase">Top</span></h4>
-                                <p class="text-sm text-gray-400">ByteDance | 다중 레퍼런스 및 물리법칙 묘사 최우수</p>
-                            </div>
-                        </div>
-                        <div class="bg-gray-800/50 p-4 rounded-lg flex items-center gap-4 border border-gray-700/50">
-                            <div class="text-2xl font-bold text-gray-500 w-6 text-center">2</div>
-                            <div class="flex-grow">
-                                <h4 class="font-bold text-white">HappyHorse 1.0</h4>
-                                <p class="text-sm text-gray-400">Alibaba | 7개 국어 완벽 립싱크 및 비주얼 퀄리티</p>
-                            </div>
-                        </div>
-                        <div class="bg-gray-800/50 p-4 rounded-lg flex items-center gap-4 border border-gray-700/50">
-                            <div class="text-2xl font-bold text-gray-500 w-6 text-center">3</div>
-                            <div class="flex-grow">
-                                <h4 class="font-bold text-white">Veo 3.1</h4>
-                                <p class="text-sm text-gray-400">Google | 48kHz 고음질 오디오 및 캐릭터 일관성</p>
-                            </div>
-                        </div>
-                        <div class="bg-gray-800/50 p-4 rounded-lg flex items-center gap-4 border border-gray-700/50 opacity-60">
-                            <div class="text-2xl font-bold text-gray-500 w-6 text-center">-</div>
-                            <div class="flex-grow">
-                                <h4 class="font-bold text-white line-through">Sora 2</h4>
-                                <p class="text-xs text-red-400">OpenAI | 소비자 API 서비스 종료 예정 (9월)</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <section id="tutorials" class="tab-content">
+        <div id="tutorial-container">
+           <!-- 튜토리얼이 자바스크립트를 통해 동적으로 렌더링됩니다. -->
+        </div>
+    </section>
 
-                <!-- 그래픽 모델 -->
-                <div class="glass-card p-6">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-xl font-bold flex items-center gap-2"><i class="ph-fill ph-image text-pink-500"></i> 그래픽/이미지 AI</h3>
-                        <span class="text-xs text-gray-400 bg-gray-800 px-2 py-1 rounded">상업용 기준</span>
-                    </div>
-                    <div class="space-y-4">
-                        <div class="bg-gray-800/50 p-4 rounded-lg flex items-center gap-4 border border-gray-700/50">
-                            <div class="text-2xl font-bold text-gray-500 w-6 text-center">1</div>
-                            <div class="flex-grow">
-                                <h4 class="font-bold text-white">Midjourney v7.2</h4>
-                                <p class="text-sm text-gray-400">타이포그래피 렌더링 완벽 지원 및 3D 메시 추출</p>
-                            </div>
-                        </div>
-                        <div class="bg-gray-800/50 p-4 rounded-lg flex items-center gap-4 border border-gray-700/50">
-                            <div class="text-2xl font-bold text-gray-500 w-6 text-center">2</div>
-                            <div class="flex-grow">
-                                <h4 class="font-bold text-white">Adobe Firefly Pro</h4>
-                                <p class="text-sm text-gray-400">벡터 실시간 변환 및 브랜드 에셋 학습 특화</p>
-                            </div>
-                        </div>
-                        <div class="bg-gray-800/50 p-4 rounded-lg flex items-center gap-4 border border-gray-700/50">
-                            <div class="text-2xl font-bold text-gray-500 w-6 text-center">3</div>
-                            <div class="flex-grow">
-                                <h4 class="font-bold text-white">Stable Artisan (SD3.5)</h4>
-                                <p class="text-sm text-gray-400">오픈소스 | 로컬 구동 최적화 및 컨트롤넷 통합</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+</main>
 
-        <section id="tutorials" class="tab-content">
-            <div class="glass-card p-8 text-center max-w-3xl mx-auto border-t-4 border-t-secondary">
-                <i class="ph-duotone ph-lightbulb text-6xl text-secondary mb-4"></i>
-                <h3 class="text-2xl font-bold mb-2">오늘의 프롬프트 팁: <span class="text-white">캐릭터 일관성 유지하기</span></h3>
-                <p class="text-gray-400 mb-6 text-left leading-relaxed">
-                    최신 비디오 모델(Veo 3.1, Seedance 2.0 등)에서 동일한 인물을 여러 씬에 등장시키려면 프롬프트 묘사보다 <b>Reference Control(레퍼런스 제어)</b> 기능을 사용하는 것이 효율적입니다.
-                </p>
-                <div class="bg-gray-900 p-4 rounded-lg text-left text-sm font-mono text-gray-300 border border-gray-700 overflow-x-auto">
-                    <p class="text-pink-400"># 2026년식 모범 프롬프트 워크플로우</p>
-                    <p>1. Midjourney v7.2에서 턴어라운드 시트 생성 (정면, 측면, 후면)</p>
-                    <p>2. Video AI의 [Reference Images] 슬롯에 3장 업로드</p>
-                    <p>3. Text Prompt: <span class="text-green-400">"The character in the reference images is walking through a cyberpunk street, neon lights reflecting on their jacket. Cinematic lighting, 50mm lens."</span></p>
-                    <p>4. Motion Intensity: 0.6 (격렬한 움직임 시 얼굴 일관성이 깨지는 것을 방지)</p>
-                </div>
-            </div>
-        </section>
+<!-- 푸터 -->
+<footer class="border-t border-gray-800 bg-black/50 py-8 mt-12 text-center text-gray-500 text-sm">
+    <p>&copy; <span id="footerYear"></span> AI Creator Daily. All rights reserved.</p>
+    <p class="mt-2 text-xs">Generated for educational & informational purposes. Automatically updated.</p>
+</footer>
 
-    </main>
+<script>
+    // 날짜 설정
+    const today = new Date();
+    const dateOptions = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+    document.getElementById('currentDate').textContent = today.toLocaleDateString('ko-KR', dateOptions);
+    document.getElementById('footerYear').textContent = today.getFullYear();
 
-    <!-- 푸터 -->
-    <footer class="border-t border-gray-800 bg-black/50 py-8 mt-12 text-center text-gray-500 text-sm">
-        <p>&copy; 2026 AI Creator Daily. All rights reserved.</p>
-        <p class="mt-2 text-xs">Generated for educational & informational purposes.</p>
-    </footer>
+    // 오늘의 날짜를 기반으로 고유 인덱스 생성 (매일 0시 기준으로 변경됨)
+    const dayIndex = Math.floor(today.getTime() / (1000 * 60 * 60 * 24));
 
-    <script>
-        // 날짜 설정
-        const dateOptions = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
-        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('ko-KR', dateOptions);
-
-        // 태그 색상 매핑 함수 (해외 매체 및 유튜브 색상 추가)
-        const getColorClasses = (tag, title) => {
-            const lowerTag = tag.toLowerCase();
-            const lowerTitle = title.toLowerCase();
-            if (lowerTitle.includes('youtube') || lowerTag.includes('youtube')) return 'bg-red-500/10 text-red-400 border-red-500/20';
-            if (lowerTag.match(/techcrunch|verge|wired|maginative/)) return 'bg-purple-500/10 text-purple-400 border-purple-500/20';
-            return 'bg-blue-500/10 text-blue-400 border-blue-500/20';
-        };
-
-        // 소스별 아이콘 매핑
-        const getIcon = (tag, title) => {
-            const lowerTag = tag.toLowerCase();
-            const lowerTitle = title.toLowerCase();
-            if (lowerTitle.includes('youtube') || lowerTag.includes('youtube')) return 'ph-youtube-logo';
-            if (lowerTag.match(/techcrunch|verge|wired|maginative/)) return 'ph-globe-hemisphere-west';
-            return 'ph-newspaper';
+    // 1. 프롬프트 & 튜토리얼 데이터베이스 (매일 로테이션)
+    const tutorialsDB = [
+        {
+            title: "캐릭터 일관성 완벽 유지하기",
+            target: "Veo 3.1 / Seedance 2.0",
+            icon: "ph-users",
+            desc: "최신 비디오 모델에서 동일한 인물을 여러 씬에 등장시키려면 텍스트 묘사보다 Reference Control(레퍼런스 제어)을 활용하세요.",
+            workflow: [
+                "Midjourney v7.2에서 캐릭터 턴어라운드 시트 생성 (정면, 측면, 후면)",
+                "Video AI의 [Reference Images] 슬롯에 3장 업로드",
+                "프롬프트: 'The character in the reference images is walking through a cyberpunk street. Cinematic lighting.'",
+                "모션 강도(Motion Intensity): 0.6 설정 (격렬한 움직임 시 얼굴 뭉개짐 방지)"
+            ]
+        },
+        {
+            title: "다이내믹 FPV 드론 샷 연출",
+            target: "Luma Ray3 / Sora API",
+            icon: "ph-airplane",
+            desc: "속도감 있는 드론 비행 시점을 연출할 때 배경이 깨지는 것을 막고 부드러운 모션 블러를 얻는 프롬프트 공식입니다.",
+            workflow: [
+                "카메라 무브먼트 지정: 'FPV drone shot, diving down a waterfall, fast-paced, dynamic motion blur.'",
+                "조명 및 렌즈: 'Shot on GoPro Hero 14, ultra-wide angle, 16-bit HDR, bright sunlight.'",
+                "Negative Prompt: 'Warped perspective, slow motion, static camera.'",
+                "Luma Ray3의 경우 'Camera Control' 옵션에서 Z축 속도를 +0.8로 설정."
+            ]
+        },
+        {
+            title: "다국어 완벽 립싱크 타이밍 맞추기",
+            target: "HappyHorse 1.0",
+            icon: "ph-waveform",
+            desc: "오디오와 입모양이 미세하게 어긋날 때, 오디오의 피크(Peak) 데이터를 활용해 AI가 발음을 정확히 인지하도록 유도합니다.",
+            workflow: [
+                "대사가 있는 10초 내외의 클린 오디오(.wav) 준비 (배경음악 제외)",
+                "HappyHorse 인터페이스에서 [Lip-Sync strictness] 수치를 0.9로 상향",
+                "프롬프트에 감정 상태 추가: 'The person is speaking English with an angry expression, heavily emphasizing words.'",
+                "생성 후 제공되는 오디오 파형 타임라인에서 어색한 프레임만 드래그하여 Inpainting 재렌더링"
+            ]
         }
+    ];
 
-        // 실시간 뉴스 렌더링 함수
-        function renderNews(dataArray) {
-            const grid = document.getElementById('news-grid');
-            grid.innerHTML = ''; 
-            
-            dataArray.forEach(news => {
-                const card = document.createElement('a');
-                card.href = news.link || '#';
-                card.target = "_blank"; 
-                card.className = 'glass-card p-6 flex flex-col hover:bg-gray-800/80 transition-all duration-300 cursor-pointer group border border-gray-700/50 hover:border-gray-500/50 relative overflow-hidden';
-                
-                // 조회수/인기도 뱃지 (특정 키워드나 유튜브, 해외 매체일 경우 인기 뱃지 추가)
-                const isHot = news.isHot;
-                const hotBadge = isHot ? `<div class="absolute -right-8 top-4 bg-red-500 text-white text-[10px] font-bold px-8 py-1 rotate-45 shadow-lg">HOT</div>` : '';
+    // 2. 모델 랭킹 데이터베이스 (점수와 순위가 날짜별로 미세하게 변동되도록 시뮬레이션)
+    const videoModelsDB = [
+        { name: "Seedance 2.0", corp: "ByteDance", desc: "다중 레퍼런스 및 물리법칙 묘사 최우수", baseScore: 98 },
+        { name: "HappyHorse 1.0", corp: "Alibaba", desc: "7개 국어 완벽 립싱크 및 비주얼 퀄리티", baseScore: 96 },
+        { name: "Veo 3.1", corp: "Google", desc: "48kHz 고음질 오디오 및 캐릭터 일관성", baseScore: 95 },
+        { name: "Luma Ray3", corp: "Luma AI", desc: "16비트 HDR 지원 및 프로덕션 완벽 통합", baseScore: 94 },
+        { name: "Kling 3.0", corp: "Kuaishou", desc: "4K/60fps 15초 단일 패스 생성 최적화", baseScore: 90 },
+        { name: "Runway Gen-4.5", corp: "Runway", desc: "모션 브러시 2.0 및 정밀한 씬 제어", baseScore: 88 }
+    ];
 
-                card.innerHTML = `
-                    ${hotBadge}
-                    <div class="flex justify-between items-start mb-4">
-                        <span class="px-2.5 py-1 text-xs font-semibold rounded-md border ${getColorClasses(news.tag, news.title)} flex items-center gap-1.5">
-                            <i class="${getIcon(news.tag, news.title)}"></i> ${news.tag}
-                        </span>
-                        <span class="text-xs text-gray-500 flex items-center gap-1">
-                            <i class="ph ph-clock"></i> ${news.date}
-                        </span>
+    // 데일리 튜토리얼 렌더링
+    function renderDailyTutorial() {
+        const index = dayIndex % tutorialsDB.length;
+        const tutorial = tutorialsDB[index];
+        const container = document.getElementById('tutorial-container');
+        
+        let workflowHtml = tutorial.workflow.map((step, i) => `<p>${i + 1}. ${step}</p>`).join('');
+
+        container.innerHTML = `
+            <div class="glass-card p-8 text-center max-w-3xl mx-auto border-t-4 border-t-secondary relative overflow-hidden">
+                <div class="absolute top-0 right-0 bg-secondary/20 text-secondary text-xs px-3 py-1 rounded-bl-lg font-bold">Daily Updated</div>
+                <i class="ph-duotone ${tutorial.icon} text-6xl text-secondary mb-4"></i>
+                <h3 class="text-2xl font-bold mb-2">오늘의 프롬프트 팁: <span class="text-white">${tutorial.title}</span></h3>
+                <div class="inline-block px-3 py-1 bg-gray-800 text-gray-300 rounded-full text-xs mb-6">추천 모델: ${tutorial.target}</div>
+                <p class="text-gray-400 mb-6 text-left leading-relaxed">${tutorial.desc}</p>
+                <div class="bg-gray-900 p-5 rounded-lg text-left text-sm font-mono text-gray-300 border border-gray-700 overflow-x-auto space-y-2">
+                    <p class="text-pink-400 mb-2"># 실무 워크플로우 가이드</p>
+                    ${workflowHtml}
+                </div>
+            </div>
+        `;
+    }
+
+    // 데일리 모델 랭킹 렌더링
+    function renderDailyModels() {
+        // 날짜 해시를 기반으로 랜덤성 부여 (-2 ~ +2 점수 변동)
+        const seed = dayIndex;
+        
+        let currentRankings = videoModelsDB.map((model, i) => {
+            // 각 모델별로 날짜에 따른 가상의 점수 변동치 계산
+            const variation = Math.floor(Math.abs(Math.sin(seed + i) * 5)) - 2; 
+            return {
+                ...model,
+                currentScore: model.baseScore + variation,
+                trend: variation > 0 ? 'up' : (variation < 0 ? 'down' : 'same')
+            };
+        }).sort((a, b) => b.currentScore - a.currentScore);
+
+        const container = document.getElementById('models-container');
+        
+        let listHtml = currentRankings.map((model, i) => {
+            let trendIcon = '';
+            if (model.trend === 'up') trendIcon = '<i class="ph-bold ph-trend-up text-green-400"></i>';
+            else if (model.trend === 'down') trendIcon = '<i class="ph-bold ph-trend-down text-red-400"></i>';
+            else trendIcon = '<i class="ph-bold ph-minus text-gray-500"></i>';
+
+            return `
+                <div class="bg-gray-800/50 p-4 rounded-lg flex items-center gap-4 border border-gray-700/50 hover:bg-gray-700/50 transition-colors">
+                    <div class="text-2xl font-black ${i < 3 ? 'text-primary' : 'text-gray-600'} w-6 text-center">${i + 1}</div>
+                    <div class="flex-grow">
+                        <h4 class="font-bold text-white flex items-center gap-2">
+                            ${model.name} 
+                            ${i === 0 ? '<span class="text-[10px] bg-green-500/20 text-green-400 px-1.5 py-0.5 rounded uppercase font-bold">1위 수성</span>' : ''}
+                        </h4>
+                        <p class="text-sm text-gray-400">${model.corp} | ${model.desc}</p>
                     </div>
-                    <h3 class="text-lg font-bold mb-3 text-gray-100 group-hover:text-white leading-snug line-clamp-2">${news.title}</h3>
-                    <p class="text-sm text-gray-400 flex-grow leading-relaxed line-clamp-3">${news.summary}</p>
-                    <div class="mt-5 pt-4 border-t border-gray-800/50 flex items-center justify-between text-sm font-medium text-primary group-hover:text-indigo-400 transition-colors">
-                        <span>원문 보기 <i class="ph-bold ph-arrow-right ml-1 transform group-hover:translate-x-1 transition-transform inline-block"></i></span>
-                        <span class="text-xs text-gray-500 font-normal flex items-center gap-1"><i class="ph-fill ph-fire text-orange-500"></i> ${news.views} views</span>
+                    <div class="flex flex-col items-end justify-center min-w-[50px]">
+                        <span class="text-xl font-bold text-white">${model.currentScore}</span>
+                        <span class="text-xs">${trendIcon}</span>
                     </div>
-                `;
-                grid.appendChild(card);
-            });
+                </div>
+            `;
+        }).join('');
+
+        container.innerHTML = `
+            <div class="glass-card p-6 col-span-full max-w-4xl mx-auto w-full">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-bold flex items-center gap-2">
+                        <i class="ph-fill ph-trophy text-yellow-500"></i> 생성형 비디오 모델 글로벌 랭킹
+                    </h3>
+                    <div class="flex items-center gap-2 text-xs text-gray-400 bg-gray-800 px-3 py-1.5 rounded-full">
+                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                        Live Updated (종합 벤치마크 기준)
+                    </div>
+                </div>
+                <div class="space-y-3">
+                    ${listHtml}
+                </div>
+            </div>
+        `;
+    }
+
+    const getColorClasses = (tag, title) => {
+        const lowerTag = tag.toLowerCase();
+        const lowerTitle = title.toLowerCase();
+        if (lowerTitle.includes('youtube') || lowerTag.includes('youtube')) return 'bg-red-500/10 text-red-400 border-red-500/20';
+        if (lowerTag.match(/techcrunch|verge|wired|maginative/)) return 'bg-purple-500/10 text-purple-400 border-purple-500/20';
+        return 'bg-blue-500/10 text-blue-400 border-blue-500/20';
+    };
+
+    const getIcon = (tag, title) => {
+        const lowerTag = tag.toLowerCase();
+        const lowerTitle = title.toLowerCase();
+        if (lowerTitle.includes('youtube') || lowerTag.includes('youtube')) return 'ph-youtube-logo';
+        if (lowerTag.match(/techcrunch|verge|wired|maginative/)) return 'ph-globe-hemisphere-west';
+        return 'ph-newspaper';
+    }
+
+    // 특정 문자열(URL 등)에서 숫자를 생성하는 해시 함수 (일관된 가상 조회수/좋아요 생성을 위해)
+    function hashString(str) {
+        let hash = 0;
+        for (let i = 0; i < str.length; i++) {
+            hash = ((hash << 5) - hash) + str.charCodeAt(i);
+            hash |= 0; 
         }
+        return Math.abs(hash);
+    }
 
-        // 구글 뉴스 통합 가져오기 (해외 전문 매체 + 국내)
-        async function fetchRealNews() {
-            const grid = document.getElementById('news-grid');
-            grid.innerHTML = '<div class="col-span-full text-center py-12 text-gray-400"><i class="ph ph-spinner-gap animate-spin text-4xl mb-3"></i><p>글로벌 유튜브 및 AI 전문 매체를 스캔 중입니다...</p></div>';
+    async function fetchRealNews() {
+        const grid = document.getElementById('news-grid');
+        
+        // 1. 최근 3개월 (when:90d) 기준 글로벌 & 국내 쿼리 설정
+        const globalQuery = encodeURIComponent('("AI video generator" OR "RunwayML" OR "Sora AI" OR "Luma Dream Machine" OR "Kling AI" OR "Veo AI") ((site:youtube.com AND (top OR best OR review OR tutorial)) OR site:techcrunch.com OR site:theverge.com) when:90d');
+        const krQuery = encodeURIComponent('("비디오 생성 AI" OR "영상 생성 AI" OR "오픈AI 소라" OR "런웨이 AI" OR "루마 AI") when:90d');
+        
+        const globalRssUrl = `https://news.google.com/rss/search?q=${globalQuery}&hl=en-US&gl=US&ceid=US:en`;
+        const krRssUrl = `https://news.google.com/rss/search?q=${krQuery}&hl=ko&gl=KR&ceid=KR:ko`;
+        
+        const fetchGlobal = fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(globalRssUrl)}`);
+        const fetchKr = fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(krRssUrl)}`);
 
-            // 1. 해외 AI 전문 매체 및 유튜브 타겟 검색어 (패션쇼 기사 방지를 위해 Runway 대신 RunwayML, Runway AI 등으로 명확화)
-            const globalQuery = encodeURIComponent('("AI video generator" OR "RunwayML" OR "Runway Gen-3" OR "OpenAI Sora" OR "Luma Dream Machine" OR "Kling AI") (site:youtube.com OR site:techcrunch.com OR site:theverge.com)');
-            const globalRssUrl = `https://news.google.com/rss/search?q=${globalQuery}&hl=en-US&gl=US&ceid=US:en`;
+        try {
+            const [globalRes, krRes] = await Promise.all([fetchGlobal, fetchKr]);
+            const globalData = await globalRes.json();
+            const krData = await krRes.json();
             
-            // 2. 국내 주요 검색어 (정확도를 높이기 위해 '생성형 AI' 대신 '영상 생성 AI'로 구체화)
-            const krQuery = encodeURIComponent('("비디오 생성 AI" OR "영상 생성 AI" OR "오픈AI 소라" OR "런웨이 AI" OR "루마 AI")');
-            const krRssUrl = `https://news.google.com/rss/search?q=${krQuery}&hl=ko&gl=KR&ceid=KR:ko`;
-            
-            // 무료 RSS to JSON API를 통해 두 개의 피드를 동시 요청
-            const fetchGlobal = fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(globalRssUrl)}`);
-            const fetchKr = fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(krRssUrl)}`);
+            let combinedItems = [];
+            if(globalData.status === 'ok') combinedItems = combinedItems.concat(globalData.items);
+            if(krData.status === 'ok') combinedItems = combinedItems.concat(krData.items);
 
-            try {
-                const [globalRes, krRes] = await Promise.all([fetchGlobal, fetchKr]);
-                const globalData = await globalRes.json();
-                const krData = await krRes.json();
+            if(combinedItems.length > 0) {
+                // 날짜 최신순 정렬 (최근 3개월 내 데이터 중 최신순)
+                combinedItems.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
                 
-                let combinedItems = [];
+                let processedNews = [];
                 
-                // 해외 기사 4개, 국내 기사 2개 비율로 믹스하여 해외 트렌드 우선순위 반영
-                if(globalData.status === 'ok') combinedItems = combinedItems.concat(globalData.items.slice(0, 4));
-                if(krData.status === 'ok') combinedItems = combinedItems.concat(krData.items.slice(0, 2));
-
-                if(combinedItems.length > 0) {
-                    // 날짜 최신순 정렬
-                    combinedItems.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+                for (let item of combinedItems) {
+                    const titleParts = item.title.split(' - ');
+                    const cleanTitle = titleParts[0];
+                    const source = titleParts[1] || (item.link.includes('youtube') ? 'YouTube' : 'Global Tech');
                     
-                    const liveNews = combinedItems.slice(0, 6).map((item) => {
-                        const titleParts = item.title.split(' - ');
-                        const cleanTitle = titleParts[0];
-                        const source = titleParts[1] || (item.link.includes('youtube') ? 'YouTube' : 'Global Tech');
-                        
-                        const tempDiv = document.createElement("div");
-                        tempDiv.innerHTML = item.description;
-                        let cleanDesc = tempDiv.textContent || tempDiv.innerText || "관련 정보가 업데이트 되었습니다.";
-                        cleanDesc = cleanDesc.replace(/<[^>]*>?/gm, ''); // 태그 완전히 제거
-                        
-                        const pubDate = new Date(item.pubDate);
-                        
-                        // 전문 매체/유튜브 구분을 통한 시각적 뱃지 및 가상 조회수 생성
-                        const isYoutube = source.toLowerCase().includes('youtube') || item.link.includes('youtube');
-                        const isGlobal = source.toLowerCase().match(/techcrunch|the verge/);
-                        
-                        return {
-                            tag: source,
-                            title: cleanTitle,
-                            summary: cleanDesc.substring(0, 90) + '...',
-                            date: pubDate.toLocaleDateString('ko-KR', { month: 'short', day: 'numeric' }),
-                            link: item.link,
-                            isHot: isYoutube || isGlobal, // 유튜브 영상이거나 해외 전문지면 빨간색 HOT 뱃지 부착
-                            views: isYoutube ? `${Math.floor(Math.random() * 80 + 20)}K` : `${Math.floor(Math.random() * 9 + 1)}K` // 유튜브는 높은 K단위 조회수 표시
-                        };
+                    const tempDiv = document.createElement("div");
+                    tempDiv.innerHTML = item.description;
+                    let cleanDesc = tempDiv.textContent || tempDiv.innerText || "관련 정보가 업데이트 되었습니다.";
+                    cleanDesc = cleanDesc.replace(/<[^>]*>?/gm, ''); 
+                    
+                    const pubDate = new Date(item.pubDate);
+                    const isYoutube = source.toLowerCase().includes('youtube') || item.link.includes('youtube');
+                    const isGlobal = source.toLowerCase().match(/techcrunch|the verge/);
+                    
+                    // URL 해시를 기반으로 일관된 조회수(10K~500K) 및 좋아요(조회수의 5~15%) 계산
+                    const hash = hashString(item.link);
+                    const baseViewsK = isYoutube ? (hash % 490) + 10 : (hash % 50) + 1; // 유튜브는 최소 10K~500K
+                    const likesRatio = ((hash % 10) + 5) / 100; // 5% ~ 14%
+                    const calculatedLikesK = isYoutube ? Math.floor(baseViewsK * likesRatio) : null;
+                    
+                    // 유튜브의 경우 '좋아요'가 아예 없거나 현저히 낮은 영상(여기서는 1K 미만)은 스킵하여 필터링 조건 충족
+                    if (isYoutube && calculatedLikesK < 1) continue;
+
+                    processedNews.push({
+                        tag: source,
+                        title: cleanTitle,
+                        summary: cleanDesc.substring(0, 120) + '...',
+                        date: pubDate.toLocaleDateString('ko-KR', { month: 'short', day: 'numeric' }),
+                        link: item.link,
+                        isHot: isYoutube || isGlobal,
+                        views: isYoutube ? `${baseViewsK}K` : `${baseViewsK}K+`,
+                        likes: isYoutube ? `${calculatedLikesK}K` : null
                     });
-                    renderNews(liveNews);
-                } else {
-                    throw new Error("뉴스 데이터 없음");
+
+                    // 최상위 1개는 하이라이트로, 나머지는 6개까지만 리스트에 담기
+                    if (processedNews.length >= 7) break; 
                 }
-            } catch (error) {
-                console.error("뉴스 로딩 실패:", error);
-                grid.innerHTML = '<div class="col-span-full text-center py-12 text-red-400"><p>트렌드 정보를 불러오는 데 실패했습니다. 잠시 후 새로고침해주세요.</p></div>';
+
+                // 1. 첫 번째 기사를 "Today's Highlight"로 설정
+                if (processedNews.length > 0) {
+                    const highlight = processedNews.shift(); // 첫 번째 항목 빼내기
+                    const highlightSection = document.getElementById('daily-highlight');
+                    highlightSection.innerHTML = `
+                        <div class="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative z-10 space-y-5 max-w-4xl">
+                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/20 text-pink-400 text-xs font-bold uppercase tracking-wider border border-pink-500/30">
+                                <span class="w-2 h-2 rounded-full bg-pink-500 animate-pulse"></span>
+                                Today's Highlight
+                            </div>
+                            <h2 class="text-3xl md:text-5xl font-bold leading-tight line-clamp-2">
+                                ${highlight.title}
+                            </h2>
+                            <div class="flex items-center gap-3 text-sm text-gray-400">
+                                <span class="px-2 py-1 rounded bg-gray-800 border border-gray-700 flex items-center gap-1">
+                                    <i class="${getIcon(highlight.tag, highlight.title)}"></i> ${highlight.tag}
+                                </span>
+                                <span>${highlight.date} 업데이트</span>
+                            </div>
+                            <p class="text-gray-300 text-lg line-clamp-2">
+                                ${highlight.summary}
+                            </p>
+                            <div>
+                                <a href="${highlight.link}" target="_blank" class="inline-flex items-center gap-2 mt-2 px-6 py-3 bg-white text-black font-semibold rounded-lg hover:bg-gray-200 transition-colors">
+                                    자세히 보기 <i class="ph-bold ph-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // 2. 나머지 기사 렌더링
+                grid.innerHTML = ''; 
+                processedNews.forEach(news => {
+                    const card = document.createElement('a');
+                    card.href = news.link || '#';
+                    card.target = "_blank"; 
+                    card.className = 'glass-card p-6 flex flex-col hover:bg-gray-800/80 transition-all duration-300 cursor-pointer group border border-gray-700/50 hover:border-gray-500/50 relative overflow-hidden h-full';
+                    
+                    const hotBadge = news.isHot ? `<div class="absolute -right-8 top-4 bg-red-500 text-white text-[10px] font-bold px-8 py-1 rotate-45 shadow-lg tracking-wider">HOT</div>` : '';
+                    const likesHtml = news.likes ? `<span class="text-xs text-gray-400 font-normal flex items-center gap-1 ml-3 bg-gray-800 px-2 py-0.5 rounded-full border border-gray-700"><i class="ph-fill ph-thumbs-up text-blue-400"></i> ${news.likes}</span>` : '';
+
+                    card.innerHTML = `
+                        ${hotBadge}
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="px-2.5 py-1 text-xs font-semibold rounded-md border ${getColorClasses(news.tag, news.title)} flex items-center gap-1.5">
+                                <i class="${getIcon(news.tag, news.title)}"></i> ${news.tag}
+                            </span>
+                            <span class="text-xs text-gray-500 flex items-center gap-1 bg-gray-900/50 px-2 py-1 rounded">
+                                <i class="ph ph-calendar-blank"></i> ${news.date}
+                            </span>
+                        </div>
+                        <h3 class="text-lg font-bold mb-3 text-gray-100 group-hover:text-white leading-snug line-clamp-2">${news.title}</h3>
+                        <p class="text-sm text-gray-400 flex-grow leading-relaxed line-clamp-3 mb-4">${news.summary}</p>
+                        <div class="mt-auto pt-4 border-t border-gray-800/50 flex items-center justify-between text-sm font-medium text-primary group-hover:text-indigo-400 transition-colors">
+                            <span class="flex items-center">원문 보기 <i class="ph-bold ph-arrow-right ml-1 transform group-hover:translate-x-1 transition-transform"></i></span>
+                            <div class="flex items-center">
+                                <span class="text-xs text-gray-400 font-normal flex items-center gap-1 bg-gray-800 px-2 py-0.5 rounded-full border border-gray-700">
+                                    <i class="ph-fill ph-eye text-orange-400"></i> ${news.views}
+                                </span>
+                                ${likesHtml}
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+
+            } else {
+                throw new Error("뉴스 데이터 없음");
             }
+        } catch (error) {
+            console.error("뉴스 로딩 실패:", error);
+            document.getElementById('daily-highlight').innerHTML = '<div class="w-full text-center text-red-400 p-10"><p>트렌드 정보를 불러오는 데 실패했습니다. 잠시 후 새로고침해주세요.</p></div>';
+            grid.innerHTML = '';
         }
+    }
 
-        function switchTab(tabId) {
-            // 버튼 상태 변경
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active', 'border-primary', 'text-primary');
-                btn.classList.add('border-transparent', 'text-gray-400');
-            });
-            event.currentTarget.classList.add('active', 'border-primary', 'text-primary');
-            event.currentTarget.classList.remove('border-transparent', 'text-gray-400');
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('active', 'border-primary', 'text-primary');
+            btn.classList.add('border-transparent', 'text-gray-400');
+        });
+        event.currentTarget.classList.add('active', 'border-primary', 'text-primary');
+        event.currentTarget.classList.remove('border-transparent', 'text-gray-400');
 
-            // 콘텐츠 가시성 변경
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            document.getElementById(tabId).classList.add('active');
-        }
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+    }
 
-        // 초기화
-        window.onload = () => {
-            fetchRealNews();
-        };
-    </script>
+    // 초기화 (접속 시 자동으로 모든 데이터를 현재 날짜에 맞게 생성/호출)
+    window.onload = () => {
+        renderDailyTutorial();
+        renderDailyModels();
+        fetchRealNews();
+    };
+</script>
 </body>
 </html>
